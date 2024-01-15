@@ -1,0 +1,202 @@
+cd D:\USER\Downloads\ATLAS\Projects\HYAXToken-Staking\w3m-staking-rewards
+
+https://github.com/scaffold-eth/scaffold-eth-2
+
+yarn install
+
+npm install @chainlink/contracts
+
+yarn add --dev @nomicfoundation/hardhat-network-helpers
+
+
+
+yarn chain
+
+yarn start
+
+yarn deploy --reset
+
+yarn deploy --reset --network hardhat
+
+yarn deploy --reset --network polygonMumbai --show-stack-traces
+
+
+http://localhost:3000
+
+
+Edit your app config in packages/nextjs/scaffold.config.ts
+Edit your frontend in packages/nextjs/pages
+Edit your smart contract YourContract.sol in packages/hardhat/contracts
+
+
+Edit your deployment scripts in packages/hardhat/deploy
+
+yarn chain
+
+yarn test
+
+yarn generate
+
+
+yarn account
+
+yarn deploy --network polygonMumbai
+
+yarn verify --network polygonMumbai
+
+
+||||||||||||||||||||DONE||||||||||||||||||||
+
+1. Identify how to distribute the reward tokens. You can't offer a fixed rate of rewards.
+
+You must calculate it based on the amount of tokens of token holders that are in the moment and the fixed supply of token rewards to be offeret accross the years.
+
+1200 M tokens / 8 years
+150 M tokens / year
+12.5 M tokens / month
+
+totalStakingReward = tokensForMonthlyRewards * (numberOfMyStakedTokens/totalNumberOfTokens) * (duration/30)
+
+
+2. Continue to test in localhost the depositStaking() function
+
+3. Continue developing and test the claimStakingRewards() function
+
+along with the calculateStakingRewards() there is an issue there around the proportionOfTokenRewardsPerMonth
+
+it seems like when you dont make more than 100% of staked tokens you get 0% of the rewards
+
+The contract function "claimStakingRewards" reverted with the following reason:
+Division or modulo by zero (e.g. `5 / 0` or `23 % 0`).
+Panic(18)
+
+4. There is a problem with the percentage of rewardRatePerMonth and how to updated
+
+10.000.000
+RATE 0.00142045
+RATE 0.142045 %
+
+14.204 REWARDS
+
+14204545 = 0.00142045
+1000000000 = 0.1
+
+500000000 = 5%
+1000000000 = 10%
+
+
+Read some tutorials for better guidance:
+
+https://celo.academy/t/implementing-staking-reward-contract-using-solidity/180
+https://solidity-by-example.org/defi/staking-rewards/
+https://hackernoon.com/how-to-implement-a-stake-and-reward-contract-in-solidity
+https://medium.com/@cyri113/solidity-tutorial-creating-an-erc20-staking-contract-23f34ce30b34
+https://medium.com/@solidity101/day-93-100-defi-discrete-staking-rewards-a9c0686aa079
+
+||||||||||||||||||||ToDo||||||||||||||||||||
+
+
+StakerData name of struct DONE
+lastStakedTimestamp name DONE
+totalSupply for rewards DONE
+Add total staked tokens variable DONE
+Add notifyRewardAmount recieving only the investor address DONE
+Decrease the total staked tokens variable when unstaking DONE
+Decrease the reward tokens variable when claimstaking DONE
+Add the events DONE
+Clean the code DONE
+Add penalty fees to the rewards that way they can get redistributed and if necessary the owner can take them back DONE
+
+
+
+TECHNICAL OPTIONS
+Change the code so that if the investor does two stakings the rewards are sent to him in case already passed more than 1 month doing the previous staking
+Calculate the reward and send it in the same unstake function? https://medium.com/@solidity101/day-93-100-defi-discrete-staking-rewards-a9c0686aa079
+Add function to tell the moment when you will recieve your rewards so you can unstake or compound?
+
+BUSINESS OPTIONS
+IMPORTANT: In the current set up the smart contract will trap the penalty tokens for early unstaking. And let in a LIMBO in the variable totalStakedTokens
+
+If the duration of staking is <30 days there are no rewards to offer?
+-unstake <30 no rewards GOOD
+-unstake <30 5% penalty over the total staked amount + rewards MEDIUM
+-unstake <30 no rewards + 5% penalty over the total staked amount EVIL
+
+-Is there any minimum staking amount?
+-Add compound function to investors?
+-Give the rewards based on supply and demand instead of fixed rate?
+
+
+NUMBERS & DECIMALS IN BLOCKCHAIN SCAN
+
+100000000000000000000000 100K
+10000000000000000000000 10K
+1000000000000000000000 1K
+100000000000000000000 100
+10000000000000000000 10
+1000000000000000000 1
+
+
+0x350441F8a82680a785FFA9d3EfEa60BB4cA417f8
+My investor wallet has 10M tokens
+
+100000000000000000000000---100K
+1000000000000000000000000---1M
+10000000000000000000000000---10M
+100000000000000000000000000---100M
+
+
+
+https://goodcalculators.com/simple-and-compound-interest-calculator/
+
+8800000000 TOKENS CIRCULATING SUPPLY
+
+-----SIMPLE-----
+1,000,000 M TOKENS
+1.704545%
+8 YEARS
+136,363.60 REWARDS
+
+TOTAL REWARDS IF ALL CIRCULATING SUPPLY IS STAKED:
+1,199,999,680.00
+
+TOTAL SUPPLY REQUIREMENT
+9,999,999,680.00
+
+
+-----COMPOUND-----
+1,000,000 M TOKENS
+1.704545%
+MONTLY COMPOUND FREQUENCY
+8 YEARS
+145,987.65
+
+TOTAL REWARDS IF ALL CIRCULATING SUPPLY IS STAKED:
+1,284,691,328.81
+
+TOTAL SUPPLY REQUIREMENT
+10,084,691,328.81
+
+IMBALANCE OF 84,691,328.81 @ 0.006 = 508,148 K
+
+-----SOLVED-----
+
+1. Just stake for all 8 years: 8,726,000,000 
+Guarantee not stake: 74,000,000
+
+2. Stop giving stake after 7.5 years
+
+3. Modify rates at the end depending on the stake at the moment
+
+4. Modify the rate in the beginig to %1.598981 so it can absorb the compounders
+
+
+Difference 9,624.05 TOKENS
++7,05%
+
+
+9,624.05 TOKENS AT USD 0.006 PER TOKEN = +57.744 USD
+9,624.05 TOKENS AT USD 0.0075 PER TOKEN = +72.180 USD
+9,624.05 TOKENS AT USD 0.009 PER TOKEN = +86.616 USD
+9,624.05 TOKENS AT USD 0.012 PER TOKEN = +115.488USD
+9,624.05 TOKENS AT USD 0.1 PER TOKEN = +962.405 USD

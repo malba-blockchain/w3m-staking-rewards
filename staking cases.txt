@@ -1,0 +1,19 @@
+TOTAL TOKENS FOR STAKING REWARDS: 1.200 M 12%
+
+POSSIBLE RATE: 1.5% PER YEAR
+
+TOTAL TOKENS IN SMART CONTRACT / YEAR: 150 M
+
+
+TOTAL REWARDS / MONTH: 12.5 M
+PERIOD MIN: 1 MONTH
+
+CASE 1: Stake less than 1 month
+
+CASE 2: Stake the whole month and withdraw
+
+CASE 3: Stake two months and withdraw
+
+CASE 4: Stake whole year and withdraw
+
+
